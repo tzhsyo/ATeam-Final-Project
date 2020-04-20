@@ -78,6 +78,16 @@ public class Main extends Application {
         root.setStyle("-fx-background-color: BLACK; -fx-text-fill: white;");
 
 
+        
+        //canvas to draw circle
+        Canvas canvas = new Canvas(700, 400);
+        Group ng = new Group();
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        drawcircle(gc);
+        root.getChildren().add(canvas);
+        primaryStage.setScene(new Scene(ng));
+        primaryStage.show();
+        
 
         Scene mainScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         // mainScene.getStylesheets().add("Style.css");
@@ -88,6 +98,14 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    //method to draw circle 
+    private void drawcircle(GraphicsContext gc) {
+      gc.setStroke(Color.RED);
+      gc.setLineWidth(5);
+      gc.strokeOval(60, 60, 30, 30);
+    }
+    
+    
     /**
      * @param args
      */
