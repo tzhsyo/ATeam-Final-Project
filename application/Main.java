@@ -1,23 +1,27 @@
 package application;
 
 
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.geometry.Insets;
+import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BackgroundFill;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import javafx.event.ActionEvent;
 
 //////////////////// ALL ASSIGNMENTS INCLUDE THIS SECTION /////////////////////
 //
@@ -35,6 +39,8 @@ public class Main extends Application {
     private static final int WINDOW_WIDTH = 1400;
     private static final int WINDOW_HEIGHT = 800;
     private static final String APP_TITLE = "Cases of COVID-19 in the United States";
+    private static final Duration TRANSLATE_DURATION = Duration.seconds(0.25);
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -105,13 +111,47 @@ public class Main extends Application {
       gc.strokeOval(60, 60, 30, 30);
     }
     
+    //method to transition circle
+    private TranslateTransition createTranslateTransition(Circle circle) {
+      final TranslateTransition transition = new TranslateTransition(TRANSLATE_DURATION, circle);
+      transition.setOnFinished(new EventHandler<ActionEvent>() {
+        @Override public void handle(ActionEvent t) {
+          circle.setCenterX(circle.getTranslateX() + circle.getCenterX());
+          circle.setCenterY(circle.getTranslateY() + circle.getCenterY());
+          circle.setTranslateX(0);
+          circle.setTranslateY(0);
+        }
+      }
+      );
+      return transition;
+    }
     
+    //method to move circle to where mouse pressed
+    private void moveCircle(Scene mainScene, Circle circle, TranslateTransition transition) {
+      mainScene.setOnMousePressed(new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+          if (!event.isControlDown()) {
+            circle.setCenterX(event.getSceneX());
+            circle.setCenterY(event.getSceneY());
+          } else {
+            transition.setToX(event.getSceneX() - circle.getCenterX());
+            transition.setToY(event.getSceneY() - circle.getCenterY());
+            transition.playFromStart();
+          }
+        }
+        });
+      }
+  
     /**
      * @param args
      */
     public static void main(String[] args) {
-        launch(args);
+            launch(args);
     }
+    
+
+   
 
     private Label addLabel(String fillText, int size) {
         Label label = new Label(fillText);
@@ -120,3 +160,5 @@ public class Main extends Application {
         return label;
     }
 }
+   
+
