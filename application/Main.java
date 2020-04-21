@@ -5,18 +5,16 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -52,7 +50,10 @@ public class Main extends Application {
         // Layout management
         BorderPane root = new BorderPane();
         BorderPane overLay = new BorderPane();
+        BorderPane loadWindow = new BorderPane();
         VBox vboxinfomation = new VBox();
+        VBox vboxOverLay = new VBox();
+        HBox bottomButton = new HBox();
         StackPane stack_pane;
 
         // Label
@@ -76,54 +77,83 @@ public class Main extends Application {
         Button button = new Button("Done");
         button.setOnAction(e -> Platform.exit());
         button.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
+        Button buttonClose = new Button("Dismiss");
+        Button buttonOK = new Button("OK");
+        Button buttonOpen = new Button("Help");
+        buttonOpen.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
+        Button buttonLoad = new Button("LoadFile");
+        buttonLoad.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
         
-        Button button2 = new Button("Dismiss");
+        // Add circle
+        Circle circle = new Circle(450, 140, 30);
+        circle.setStroke(Color.RED);
+        circle.setFill(Color.RED.deriveColor(1, 1, 1, 0.7));
+        // canvas to draw circle
+        // Canvas canvas = new Canvas(700, 400);
+        // Group ng = new Group();
+        // GraphicsContext gc = canvas.getGraphicsContext2D();
+        // drawcircle(gc);
+        // root.getChildren().add(circle);
+        // primaryStage.setScene(new Scene(ng));
+        // primaryStage.show();
         
-       
+
+        // Add rectangle
+        Rectangle rectangle = new Rectangle(450, 320, 500, 160);
+        rectangle.setFill(Color.WHITE);
 
         // Add to layout management
         // Vbox
         vboxinfomation.getChildren().addAll(addLabel("Total Cases in US:", 24),
-                addLabel("Total Cases in local:", 20), addLabel("New cases:", 18),
-                addLabel("Recovered:", 18), addLabel("Deaths:", 18));
+                addLabel("Total Cases in local: 776,093", 20), addLabel("New cases: 22,732", 18),
+                addLabel("Recovered: 82,620", 18), addLabel("Deaths: 41,758", 18));
+
+        vboxOverLay.getChildren().addAll(addLabel2("Program instruction", 18), addLabel2(
+                "Hover over the red circle to display statistics on the left. (Status: incomplete)",
+                12),
+                addLabel2("Use the \"Done\" button to exit the program. (Status: complete)", 12),
+                addLabel2("Use the \"Dismiss\" button to exit the instruction. (Status: complete)", 12),
+                addLabel2("Use the \"Help\" button to reopen the instruction page. (Status: incomplete)", 12),
+                addLabel2("Data import. (Status: incomplete)", 12),
+                addLabel2("Multi Circle drawing. (Status: incomplete)", 12),
+                addLabel2("Style. (Status: incomplete)", 12),
+                buttonClose
+                );
+        vboxOverLay.setAlignment(Pos.CENTER);
         
-        // Add circle
-        Circle circle = new Circle( 425, 140, 30);
-        circle.setStroke(Color.RED);
-        circle.setFill(Color.RED.deriveColor(1, 1, 1, 0.7));
-        
-        //Add rectangle
-        Rectangle rectangle = new Rectangle(550, 300, 300, 160);
-        rectangle.setFill(Color.WHITE);
-        
+        //Hbox
+        bottomButton.getChildren().addAll(button,buttonOpen,buttonLoad);
+
         // BorderPane// Main pages
         root.setTop(tital);
         root.setCenter(iv);
         root.setLeft(vboxinfomation);
-        root.setBottom(button);
+        root.setBottom( bottomButton);
         root.setStyle("-fx-background-color: BLACK; -fx-text-fill: white;");
         root.getChildren().add(circle);
-        
-        //Overlay
+
+        // Overlay
         overLay.getChildren().add(rectangle);
-        overLay.setCenter(button2);
+        overLay.setCenter(vboxOverLay);
         overLay.setStyle("-fx-background-color: rgba(105,105,105, 0.9);");
         
-        //InfoOverlay
-        stack_pane = new StackPane(root,overLay);
-        //button to delect the overlay
-        button2.setOnAction(e -> stack_pane.getChildren().remove(overLay));
+        // loadWindow
+        loadWindow.setStyle("-fx-background-color: rgba(105,105,105, 0.9);");
+        Rectangle box = new Rectangle(450, 320, 500, 160);
+        loadWindow.getChildren().add(box);
+        box.setFill(Color.WHITE);
+        loadWindow.setCenter(buttonOK);
         
-        //canvas to draw circle
-//        Canvas canvas = new Canvas(700, 400);
-//        Group ng = new Group();
-//        GraphicsContext gc = canvas.getGraphicsContext2D();
-//        drawcircle(gc);
-//        root.getChildren().add(circle);
-//        primaryStage.setScene(new Scene(ng));
-//        primaryStage.show();
         
-
+        // InfoOverlay
+        stack_pane = new StackPane(root, overLay);
+        
+        // Button Action
+        buttonClose.setOnAction(e -> stack_pane.getChildren().remove(overLay));
+        buttonOpen.setOnAction(e -> stack_pane.getChildren().add(overLay));
+        buttonLoad.setOnAction(e -> stack_pane.getChildren().add(loadWindow));
+        buttonOK.setOnAction(e -> stack_pane.getChildren().remove(loadWindow));
+        
         Scene mainScene = new Scene(stack_pane, WINDOW_WIDTH, WINDOW_HEIGHT);
         // mainScene.getStylesheets().add("Style.css");
 
@@ -133,55 +163,54 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    //method to draw circle 
+    // method to draw circle
     private void drawcircle(GraphicsContext gc) {
-      gc.setStroke(Color.RED);
-      gc.setLineWidth(5);
-      gc.strokeOval(300, 300, 30, 30);
+        gc.setStroke(Color.RED);
+        gc.setLineWidth(5);
+        gc.strokeOval(300, 300, 30, 30);
     }
-    
-    
-    //method to transition circle
+
+
+    // method to transition circle
     private TranslateTransition createTranslateTransition(Circle circle) {
-      final TranslateTransition transition = new TranslateTransition(TRANSLATE_DURATION, circle);
-      transition.setOnFinished(new EventHandler<ActionEvent>() {
-        @Override public void handle(ActionEvent t) {
-          circle.setCenterX(circle.getTranslateX() + circle.getCenterX());
-          circle.setCenterY(circle.getTranslateY() + circle.getCenterY());
-          circle.setTranslateX(0);
-          circle.setTranslateY(0);
-        }
-      }
-      );
-      return transition;
-    }
-    
-    //method to move circle to where mouse pressed
-    private void moveCircle(Scene mainScene, Circle circle, TranslateTransition transition) {
-      mainScene.setOnMousePressed(new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent event) {
-          if (!event.isControlDown()) {
-            circle.setCenterX(event.getSceneX());
-            circle.setCenterY(event.getSceneY());
-          } else {
-            transition.setToX(event.getSceneX() - circle.getCenterX());
-            transition.setToY(event.getSceneY() - circle.getCenterY());
-            transition.playFromStart();
-          }
-        }
+        final TranslateTransition transition = new TranslateTransition(TRANSLATE_DURATION, circle);
+        transition.setOnFinished(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent t) {
+                circle.setCenterX(circle.getTranslateX() + circle.getCenterX());
+                circle.setCenterY(circle.getTranslateY() + circle.getCenterY());
+                circle.setTranslateX(0);
+                circle.setTranslateY(0);
+            }
         });
-      }
-  
+        return transition;
+    }
+
+    // method to move circle to where mouse pressed
+    private void moveCircle(Scene mainScene, Circle circle, TranslateTransition transition) {
+        mainScene.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (!event.isControlDown()) {
+                    circle.setCenterX(event.getSceneX());
+                    circle.setCenterY(event.getSceneY());
+                } else {
+                    transition.setToX(event.getSceneX() - circle.getCenterX());
+                    transition.setToY(event.getSceneY() - circle.getCenterY());
+                    transition.playFromStart();
+                }
+            }
+        });
+    }
+
     /**
      * @param args
      */
     public static void main(String[] args) {
-            launch(args);
+        launch(args);
     }
-    
 
-   
+
 
     private Label addLabel(String fillText, int size) {
         Label label = new Label(fillText);
@@ -189,6 +218,13 @@ public class Main extends Application {
         label.setFont(new Font(size));
         return label;
     }
+    
+    private Label addLabel2(String fillText, int size) {
+        Label label = new Label(fillText);
+        label.setTextFill(Color.BLACK);
+        label.setFont(new Font(size));
+        return label;
+    }
 }
-   
+
 
