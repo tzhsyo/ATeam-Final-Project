@@ -10,14 +10,18 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -47,7 +51,9 @@ public class Main extends Application {
 
         // Layout management
         BorderPane root = new BorderPane();
+        BorderPane overLay = new BorderPane();
         VBox vboxinfomation = new VBox();
+        StackPane stack_pane;
 
         // Label
         Label tital = new Label(APP_TITLE);
@@ -70,32 +76,55 @@ public class Main extends Application {
         Button button = new Button("Done");
         button.setOnAction(e -> Platform.exit());
         button.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
+        
+        Button button2 = new Button("Dismiss");
+        
+       
 
         // Add to layout management
         // Vbox
         vboxinfomation.getChildren().addAll(addLabel("Total Cases in US:", 24),
                 addLabel("Total Cases in local:", 20), addLabel("New cases:", 18),
                 addLabel("Recovered:", 18), addLabel("Deaths:", 18));
-        // BorderPane
+        
+        // Add circle
+        Circle circle = new Circle( 425, 140, 30);
+        circle.setStroke(Color.RED);
+        circle.setFill(Color.RED.deriveColor(1, 1, 1, 0.7));
+        
+        //Add rectangle
+        Rectangle rectangle = new Rectangle(550, 300, 300, 160);
+        rectangle.setFill(Color.WHITE);
+        
+        // BorderPane// Main pages
         root.setTop(tital);
         root.setCenter(iv);
         root.setLeft(vboxinfomation);
         root.setBottom(button);
         root.setStyle("-fx-background-color: BLACK; -fx-text-fill: white;");
-
-
+        root.getChildren().add(circle);
+        
+        //Overlay
+        overLay.getChildren().add(rectangle);
+        overLay.setCenter(button2);
+        overLay.setStyle("-fx-background-color: rgba(105,105,105, 0.9);");
+        
+        //InfoOverlay
+        stack_pane = new StackPane(root,overLay);
+        //button to delect the overlay
+        button2.setOnAction(e -> stack_pane.getChildren().remove(overLay));
         
         //canvas to draw circle
-        Canvas canvas = new Canvas(700, 400);
-        Group ng = new Group();
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        drawcircle(gc);
-        root.getChildren().add(canvas);
-        primaryStage.setScene(new Scene(ng));
-        primaryStage.show();
+//        Canvas canvas = new Canvas(700, 400);
+//        Group ng = new Group();
+//        GraphicsContext gc = canvas.getGraphicsContext2D();
+//        drawcircle(gc);
+//        root.getChildren().add(circle);
+//        primaryStage.setScene(new Scene(ng));
+//        primaryStage.show();
         
 
-        Scene mainScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+        Scene mainScene = new Scene(stack_pane, WINDOW_WIDTH, WINDOW_HEIGHT);
         // mainScene.getStylesheets().add("Style.css");
 
         // Add the stuff and set the primary stage
@@ -108,8 +137,9 @@ public class Main extends Application {
     private void drawcircle(GraphicsContext gc) {
       gc.setStroke(Color.RED);
       gc.setLineWidth(5);
-      gc.strokeOval(60, 60, 30, 30);
+      gc.strokeOval(300, 300, 30, 30);
     }
+    
     
     //method to transition circle
     private TranslateTransition createTranslateTransition(Circle circle) {
