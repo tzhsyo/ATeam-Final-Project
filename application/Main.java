@@ -4,12 +4,15 @@ package application;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -51,8 +54,11 @@ public class Main extends Application {
         BorderPane root = new BorderPane();
         BorderPane overLay = new BorderPane();
         BorderPane loadWindow = new BorderPane();
+        BorderPane updateWindow = new BorderPane();
         VBox vboxinfomation = new VBox();
         VBox vboxOverLay = new VBox();
+        VBox vboxLoad = new VBox();
+        VBox vboxUpadte = new VBox();
         HBox bottomButton = new HBox();
         StackPane stack_pane;
 
@@ -78,12 +84,15 @@ public class Main extends Application {
         button.setOnAction(e -> Platform.exit());
         button.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
         Button buttonClose = new Button("Dismiss");
-        Button buttonOK = new Button("OK");
+        Button buttonOK = new Button("Load");
+        Button buttonOK2 = new Button("Save");
         Button buttonOpen = new Button("Help");
         buttonOpen.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
         Button buttonLoad = new Button("LoadFile");
         buttonLoad.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
-        
+        Button buttonUpadte = new Button("Update");
+        buttonUpadte.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
+
         // Add circle
         Circle circle = new Circle(450, 140, 30);
         circle.setStroke(Color.RED);
@@ -96,11 +105,35 @@ public class Main extends Application {
         // root.getChildren().add(circle);
         // primaryStage.setScene(new Scene(ng));
         // primaryStage.show();
-        
 
         // Add rectangle
         Rectangle rectangle = new Rectangle(450, 320, 500, 160);
         rectangle.setFill(Color.WHITE);
+
+        //
+        String file[] = {"04-17-2020.csv", "04-18-2020.csv", "04-19-2020.csv", "04-20-2020.csv"};
+        ComboBox<String> combo_box1 = new ComboBox<String>(FXCollections.observableArrayList(file));
+
+        String data[] = {"Cases", "Recovered", "Deaths"};
+        ComboBox<String> combo_box2 = new ComboBox<String>(FXCollections.observableArrayList(data));
+
+        String state[] = {"Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado",
+                "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois",
+                "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland",
+                "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana",
+                "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York",
+                "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania",
+                "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah",
+                "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"};
+        
+        ComboBox<String> combo_box3 = new ComboBox<String>(FXCollections.observableArrayList(state));
+        
+        //TextField
+        TextField dataField = new TextField();
+        dataField.setPromptText("Enter text here");
+        dataField.setMaxWidth(150);
+        String username = dataField.getText();
+
 
         // Add to layout management
         // Vbox
@@ -112,23 +145,29 @@ public class Main extends Application {
                 "Hover over the red circle to display statistics on the left. (Status: incomplete)",
                 12),
                 addLabel2("Use the \"Done\" button to exit the program. (Status: complete)", 12),
-                addLabel2("Use the \"Dismiss\" button to exit the instruction. (Status: complete)", 12),
-                addLabel2("Use the \"Help\" button to reopen the instruction page. (Status: incomplete)", 12),
-                addLabel2("Data import. (Status: incomplete)", 12),
-                addLabel2("Multi Circle drawing. (Status: incomplete)", 12),
-                addLabel2("Style. (Status: incomplete)", 12),
-                buttonClose
-                );
+                addLabel2("Use the \"Dismiss\" button to exit the instruction. (Status: complete)",
+                        12),
+                addLabel2(
+                        "Use the \"Help\" button to reopen the instruction page. (Status: complete)",
+                        12),
+                addLabel2("Use the \"LoadFile\" button to load file. (Status: complete)", 12),
+                addLabel2("Use the \"Update\" button to upadate file data and save. (Status: complete)", 12),
+                 buttonClose);
         vboxOverLay.setAlignment(Pos.CENTER);
-        
-        //Hbox
-        bottomButton.getChildren().addAll(button,buttonOpen,buttonLoad);
+
+        vboxLoad.getChildren().addAll(addLabel2("Load File", 18), combo_box1, buttonOK);
+        vboxLoad.setAlignment(Pos.CENTER);
+
+        vboxUpadte.getChildren().addAll(addLabel2("Update", 18), combo_box2,combo_box3,dataField,buttonOK2);
+        vboxUpadte.setAlignment(Pos.CENTER);
+        // Hbox
+        bottomButton.getChildren().addAll(button, buttonOpen, buttonLoad, buttonUpadte);
 
         // BorderPane// Main pages
         root.setTop(tital);
         root.setCenter(iv);
         root.setLeft(vboxinfomation);
-        root.setBottom( bottomButton);
+        root.setBottom(bottomButton);
         root.setStyle("-fx-background-color: BLACK; -fx-text-fill: white;");
         root.getChildren().add(circle);
 
@@ -136,24 +175,31 @@ public class Main extends Application {
         overLay.getChildren().add(rectangle);
         overLay.setCenter(vboxOverLay);
         overLay.setStyle("-fx-background-color: rgba(105,105,105, 0.9);");
-        
+
         // loadWindow
         loadWindow.setStyle("-fx-background-color: rgba(105,105,105, 0.9);");
         Rectangle box = new Rectangle(450, 320, 500, 160);
         loadWindow.getChildren().add(box);
         box.setFill(Color.WHITE);
-        loadWindow.setCenter(buttonOK);
-        
-        
+        loadWindow.setCenter(vboxLoad);
+
+        // UpdateWindow
+        updateWindow.setStyle("-fx-background-color: rgba(105,105,105, 0.9);");
+        Rectangle box2 = new Rectangle(450, 320, 500, 160);
+        updateWindow.getChildren().add(box2);
+        box2.setFill(Color.WHITE);
+        updateWindow.setCenter(vboxUpadte);
+
         // InfoOverlay
         stack_pane = new StackPane(root, overLay);
-        
+
         // Button Action
         buttonClose.setOnAction(e -> stack_pane.getChildren().remove(overLay));
         buttonOpen.setOnAction(e -> stack_pane.getChildren().add(overLay));
         buttonLoad.setOnAction(e -> stack_pane.getChildren().add(loadWindow));
         buttonOK.setOnAction(e -> stack_pane.getChildren().remove(loadWindow));
-        
+        buttonUpadte.setOnAction(e -> stack_pane.getChildren().add(updateWindow));
+        buttonOK2.setOnAction(e -> stack_pane.getChildren().remove(updateWindow));
         Scene mainScene = new Scene(stack_pane, WINDOW_WIDTH, WINDOW_HEIGHT);
         // mainScene.getStylesheets().add("Style.css");
 
@@ -218,7 +264,7 @@ public class Main extends Application {
         label.setFont(new Font(size));
         return label;
     }
-    
+
     private Label addLabel2(String fillText, int size) {
         Label label = new Label(fillText);
         label.setTextFill(Color.BLACK);

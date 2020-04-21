@@ -2,7 +2,7 @@ README
 
 Course: cs400
 Semester: Spring 2020
-Project name: Social Network
+Project name: Covid-19 data
 Team Members:
 1. Jackie Chang, Lecture 002, and Jchang66@wisc.edu
 2. Zi Lee, Lecture 001, and jlee828@wisc.edu
@@ -20,7 +20,9 @@ Progress:
 Hover over the red circle to display statistics on the left. (Status: incomplete)
 Use the Done button to exit the program. (Status: complete)
 Use the Dismiss button to exit the instruction. (Status: complete)
-Use the Help button to reopen the instruction page. (Status: incomplete)
+Use the Help button to reopen the instruction page. (Status: complete)
+Use the Load button to load file. (Status: complete(only GUI part))
+Use the Save button to save new data. (Status: complete(only GUI part))
 Data import(csv file). (Status: incomplete)
 Multi Circle drawing. (Status: incomplete)
 Style. (Status: incomplete)

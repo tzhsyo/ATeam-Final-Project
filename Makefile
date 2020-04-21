@@ -1,9 +1,9 @@
 .PHONY = make jar runjar test clean
 
 # replace with path to your javac,java,jar,javafx installations
-JC = /Users/tzyo/Desktop/CS_400/p5_HelloFX/application     # replace with path to javac or javac.exe
-JAR = /Users/tzyo/Desktop/CS_400/p5_HelloFX     # replace with path to jar or jar.exe
-JAVA = /Users/tzyo/Desktop/CS_400/p5_HelloFX/application    # replace with path to java or javaw.exe
+JC = /Users/tzyo/Desktop/Ateam/application     # replace with path to javac or javac.exe
+JAR = /Users/tzyo/Desktop/Ateam     # replace with path to jar or jar.exe
+JAVA = /Users/tzyo/Desktop/Ateam/application    # replace with path to java or javaw.exe
 MP = --module-path /Users/tzyo/Desktop/CS_400/javafx-sdk-11.0.2/lib --add-modules javafx.controls,javafx.fxml #-Dfile.encoding=UTF-8 
 CP = -classpath ".:application" 
 APP = application.Main
