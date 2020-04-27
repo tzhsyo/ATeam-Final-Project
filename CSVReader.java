@@ -115,7 +115,7 @@ public class CSVReader {
 	 * @return a txt file that reports the new cases
 	 * @throws IOException
 	 */
-	private File addNew(String newCases, String type, String state)
+	static File addNew(String newCases, String type, String state)
 			throws IOException {
 		File file = new File("new.txt");
 		FileWriter writer = new FileWriter(file);
@@ -126,7 +126,7 @@ public class CSVReader {
 		return file;
 	}
 
-	private void printContents() {
+	void printContents() {
 		for (Map.Entry<String, ArrayList<Integer>> k : t.entrySet()) {
 			System.out.println(k.getKey());
 			System.out.println("confirmed: " + k.getValue().get(0)
