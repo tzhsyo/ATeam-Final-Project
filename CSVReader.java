@@ -102,7 +102,7 @@ public class CSVReader {
 			}
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("Error! Bad pathname. Unable to parse file.");
 		}
 	}
 
