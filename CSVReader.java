@@ -12,7 +12,7 @@ import java.util.TreeMap;
 
 public class CSVReader {
 	Map<String, ArrayList<Integer>> t = new TreeMap<>();
-	String pathname = "";
+	static String pathname = "";
 
 	public CSVReader(String pathname) {
 		this.pathname = pathname;
@@ -28,7 +28,7 @@ public class CSVReader {
 	/**
 	 * This method parses a cvs file ands the data into a treemap
 	 */
-	private void reader() {
+	void reader() {
 		String cvsFile = pathname;
 		String line = "";
 		String cvsSplitBy = ",";
@@ -115,7 +115,7 @@ public class CSVReader {
 	 * @return a txt file that reports the new cases
 	 * @throws IOException
 	 */
-	static File addNew(String newCases, String type, String state)
+	File addNew(String newCases, String type, String state)
 			throws IOException {
 		File file = new File("new.txt");
 		FileWriter writer = new FileWriter(file);
