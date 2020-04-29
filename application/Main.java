@@ -232,7 +232,13 @@ public class Main extends Application {
         // Error overlay
         errorExit.setOnAction(e -> stack_pane.getChildren().remove(errorWindow));
         // Upadte overlay
-        buttonUpadte.setOnAction(e -> stack_pane.getChildren().add(updateWindow));
+        buttonUpadte.setOnAction(e -> {stack_pane.getChildren().add(updateWindow);
+            if(check == false) {
+                vboxUpadte.getChildren().clear();
+                vboxUpadte.getChildren().addAll(addLabel("Update", 18), addLabel("Require load file", 14),
+                        datas ,states,updataTextField,UpDatebutton);  
+            }
+            });
         saveButtonExit.setOnAction(e -> {stack_pane.getChildren().remove(updateWindow);
             vboxUpadte.getChildren().clear();
             vboxUpadte.getChildren().addAll(addLabel("Update", 18), datas ,states,updataTextField,UpDatebutton);
@@ -254,11 +260,9 @@ public class Main extends Application {
                     }catch(NumberFormatException c){
                         vboxUpadte.getChildren().clear();
                         vboxUpadte.getChildren().addAll(addLabel("Update", 18), addLabel("Invalid update", 14),
-                                datas ,states,updataTextField,UpDatebutton);;
+                                datas ,states,updataTextField,UpDatebutton);
                     }
                 }
-                
-
         });
         // Exit progam
         button.setOnAction(e -> {Platform.exit();try {

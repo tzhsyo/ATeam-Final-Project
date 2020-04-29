@@ -1,4 +1,4 @@
-package application;
+package a3;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,16 +12,10 @@ import java.util.TreeMap;
 
 public class CSVReader {
 	Map<String, ArrayList<Integer>> t = new TreeMap<>();
-	private String pathname = "";
-	private boolean check;
-	private ArrayList<String> UpdateInfo = new ArrayList<>();
-
-	public CSVReader() {
-    }
+	static String pathname = "";
 
 	public CSVReader(String pathname) {
 		this.pathname = pathname;
-		reader();
 	}
 
 //	private String scanner() {
@@ -104,32 +98,12 @@ public class CSVReader {
 						}
 					}
 				}
+
 			}
-			check = true;
-			//System.out.println(check);
-		} catch (Exception e) {
-			//System.out.println("Error! Bad pathname. Unable to parse file.");
-		    check = false;
-		    //System.out.println(check);
-		    
+
+		} catch (IOException e) {
+			System.out.println("Error! Bad pathname. Unable to parse file.");
 		}
-	}
-	
-	public void addNew(String dataType, String state, int number) {;
-	    int type = 0;
-	    if(dataType.contains("Recovered")) {
-	        type = 2;
-	    }else if (dataType.contains("Deaths")) {
-	        type = 1;
-	    }
-	    for (Map.Entry<String, ArrayList<Integer>> k : t.entrySet()) {
-            if (k.getKey().equals(state)) {
-                int temp = k.getValue().get(type)+number;
-                k.getValue().set(type, temp);
-                UpdateInfo.add(state + " has " + number + " new " + dataType);
-            }
-        }
-       
 	}
 
 	/**
@@ -141,14 +115,14 @@ public class CSVReader {
 	 * @return a txt file that reports the new cases
 	 * @throws IOException
 	 */
-	public File printFile()throws IOException {
-		File file = new File("UpdateLog.txt");
+	File addNew(String newCases, String type, String state)
+			throws IOException {
+		File file = new File("new.txt");
 		FileWriter writer = new FileWriter(file);
-		if(UpdateInfo != null)
-		for(int i = 0; i < UpdateInfo.size(); i++) {
-		    writer.write(UpdateInfo.get(i)+ System.getProperty("line.separator"));
-		}
+
+		writer.write(state + " has " + newCases + " new " + type);
 		writer.close();
+
 		return file;
 	}
 
@@ -165,7 +139,7 @@ public class CSVReader {
 	 * Method to get total confirmed cases 
 	 * @return total confirmed cases 
 	 */
-	public int getTotalCases() {
+	private int getTotalCases() {
 		int total = 0;
 		for (Map.Entry<String, ArrayList<Integer>> k : t.entrySet()) {
 			ArrayList<Integer> temp = k.getValue();
@@ -179,7 +153,7 @@ public class CSVReader {
 	 * Method to get total deaths
 	 * @return total deaths
 	 */
-	public int getTotalDeaths() {
+	private int getTotalDeaths() {
 		int total = 0;
 		for (Map.Entry<String, ArrayList<Integer>> k : t.entrySet()) {
 			ArrayList<Integer> temp = k.getValue();
@@ -193,7 +167,7 @@ public class CSVReader {
 	 * Method to get total recovered 
 	 * @return total recovered 
 	 */
-	public int getTotalRecovered() {
+	private int getTotalRecovered() {
 		int total = 0;
 		for (Map.Entry<String, ArrayList<Integer>> k : t.entrySet()) {
 			ArrayList<Integer> temp = k.getValue();
@@ -208,7 +182,7 @@ public class CSVReader {
 	 * @param state - specified state 
 	 * @return total confirmed cases for specific state 
 	 */
-	public int getTotalCases(String state) {
+	private int getTotalCases(String state) {
 		int total = 0;
 		for (Map.Entry<String, ArrayList<Integer>> k : t.entrySet()) {
 			if (k.getKey().equals(state)) {
@@ -226,7 +200,7 @@ public class CSVReader {
 	 * @param state - specified state 
 	 * @return total deaths for specific state 
 	 */
-	public int getTotalDeaths(String state) {
+	private int getTotalDeaths(String state) {
 		int total = 0;
 		for (Map.Entry<String, ArrayList<Integer>> k : t.entrySet()) {
 			if (k.getKey().equals(state)) {
@@ -244,7 +218,7 @@ public class CSVReader {
 	 * @param state - specified state
 	 * @return total recovered cases for a specific state 
 	 */
-	public int getTotalRecovered(String state) {
+	private int getTotalRecovered(String state) {
 		int total = 0;
 		for (Map.Entry<String, ArrayList<Integer>> k : t.entrySet()) {
 			if (k.getKey().equals(state)) {
@@ -255,29 +229,17 @@ public class CSVReader {
 	
 		return total;
 	}	
-	
-	/**
-     * Method to get check successful parses csv.file 
-     * 
-     * @param state - specified state
-     * @return total recovered cases for a specific state 
-     */
-	public boolean getCheck() {
-	    return check;
+	public static void main(String[] args) {
+		CSVReader tester = new CSVReader(
+				"/Users/jadelee/Documents/cs400/a3/data.csv");
+		tester.reader();
+		tester.printContents();
+		System.out.println("getTotalCases(): " + tester.getTotalCases());
+		System.out.println("getTotalDeaths(): " + tester.getTotalDeaths());
+		System.out.println("getTotalRecovered(): " + tester.getTotalRecovered());
+		System.out.println("getTotalCases(Wisconsin) " + tester.getTotalCases("Wisconsin"));
+		System.out.println("getTotalCases(Wisconsin) " + tester.getTotalDeaths("Wisconsin"));
+		System.out.println("getTotalCases(Wisconsin) " + tester.getTotalRecovered("Wisconsin"));
 	}
-	
-	
-//	public static void main(String[] args) {
-//		CSVReader tester = new CSVReader(
-//				"/Users/jadelee/Documents/cs400/a3/data.csv");
-//		tester.reader();
-//		tester.printContents();
-//		System.out.println("getTotalCases(): " + tester.getTotalCases());
-//		System.out.println("getTotalDeaths(): " + tester.getTotalDeaths());
-//		System.out.println("getTotalRecovered(): " + tester.getTotalRecovered());
-//		System.out.println("getTotalCases(Wisconsin) " + tester.getTotalCases("Wisconsin"));
-//		System.out.println("getTotalCases(Wisconsin) " + tester.getTotalDeaths("Wisconsin"));
-//		System.out.println("getTotalCases(Wisconsin) " + tester.getTotalRecovered("Wisconsin"));
-//	}
 }
 
