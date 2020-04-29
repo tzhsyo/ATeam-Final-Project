@@ -176,7 +176,59 @@ public class CSVReader {
 	
 		return total;
 	}
+	/**
+	 * Method to get total confirmed cases in a state 
+	 * 
+	 * @param state - specified state 
+	 * @return total confirmed cases for specific state 
+	 */
+	private int getTotalCases(String state) {
+		int total = 0;
+		for (Map.Entry<String, ArrayList<Integer>> k : t.entrySet()) {
+			if (k.getKey().equals(state)) {
+				ArrayList<Integer> temp = k.getValue();
+				total += temp.get(0);
+			}
+		}
 	
+		return total;
+	}
+	
+	/**
+	 * Method to get total deaths for a specific state 
+	 * 
+	 * @param state - specified state 
+	 * @return total deaths for specific state 
+	 */
+	private int getTotalDeaths(String state) {
+		int total = 0;
+		for (Map.Entry<String, ArrayList<Integer>> k : t.entrySet()) {
+			if (k.getKey().equals(state)) {
+				ArrayList<Integer> temp = k.getValue();
+				total += temp.get(1);
+			}
+		}
+	
+		return total;
+	}
+
+	/**
+	 * Method to get total recovered cases for a specific state 
+	 * 
+	 * @param state - specified state
+	 * @return total recovered cases for a specific state 
+	 */
+	private int getTotalRecovered(String state) {
+		int total = 0;
+		for (Map.Entry<String, ArrayList<Integer>> k : t.entrySet()) {
+			if (k.getKey().equals(state)) {
+				ArrayList<Integer> temp = k.getValue();
+				total += temp.get(2);
+			}
+		}
+	
+		return total;
+	}	
 	public static void main(String[] args) {
 		CSVReader tester = new CSVReader(
 				"/Users/jadelee/Documents/cs400/a3/data.csv");
@@ -185,6 +237,9 @@ public class CSVReader {
 		System.out.println("getTotalCases(): " + tester.getTotalCases());
 		System.out.println("getTotalDeaths(): " + tester.getTotalDeaths());
 		System.out.println("getTotalRecovered(): " + tester.getTotalRecovered());
+		System.out.println("getTotalCases(Wisconsin) " + tester.getTotalCases("Wisconsin"));
+		System.out.println("getTotalCases(Wisconsin) " + tester.getTotalDeaths("Wisconsin"));
+		System.out.println("getTotalCases(Wisconsin) " + tester.getTotalRecovered("Wisconsin"));
 	}
 }
 
