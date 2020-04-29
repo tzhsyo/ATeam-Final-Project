@@ -125,8 +125,7 @@ public class Main extends Application {
         Button errorExit = new Button("Done"); //Close error
         Button buttonLoad = new Button("LoadFile"); //Open load page
         Button buttonUpadte = new Button("Update"); // Open save page
-        
-        Button openFile = new Button("Select a File");
+        Button openFile = new Button("Select a File"); //select file
         button.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
         buttonOpen.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
         buttonLoad.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white;");
@@ -188,11 +187,11 @@ public class Main extends Application {
         vboxOverLay.getChildren().addAll(
                 addLabel("Program instruction", 14), 
                 addLabel("Clicked red circle to display statistics on the left.",12),
-                addLabel("Use the \"Exit\" button to exit the program.", 12),
+                addLabel("Use the \"Exit\" button to exit the program and export update log.", 12),
                 addLabel("Use the \"Done\" button to exit the current page.",12),
                 addLabel("Use the \"Help\" button to reopen the instruction page.",12),
                 addLabel("Use the \"LoadFile\" button to open load file page.", 12),
-                addLabel("Use the \"Update\" button to open data upadate page.", 12),
+                addLabel("Use the \"Update\" button to open data update page.", 12),
                 addLabel("Use the \"Save\" button to save update data.",12),
                  buttonClose);
         vboxOverLay.setAlignment(Pos.CENTER);

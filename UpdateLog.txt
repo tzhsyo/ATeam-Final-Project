@@ -1,0 +1,3 @@
+Alabama has 1000 new Cases
+Alabama has 1000 new Recovered
+Alabama has 1000 new Deaths

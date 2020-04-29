@@ -11,14 +11,19 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class CSVReader {
-	Map<String, ArrayList<Integer>> t = new TreeMap<>();
+	Map<String, ArrayList<Integer>> tree = new TreeMap<>();
 	private String pathname = "";
 	private boolean check;
 	private ArrayList<String> UpdateInfo = new ArrayList<>();
-
+	
+	/**
+     * Constructor no arg
+     */
 	public CSVReader() {
     }
-
+	/**
+     * Constructor with state name
+     */
 	public CSVReader(String pathname) {
 		this.pathname = pathname;
 		reader();
@@ -48,7 +53,7 @@ public class CSVReader {
 				if (data[3].contentEquals("US")) {
 					String state = data[2];
 
-					if (!t.containsKey(state)) { // if the state is not already
+					if (!tree.containsKey(state)) { // if the state is not already
 													// in the treemap
 						ArrayList<Integer> vals = new ArrayList<>();
 
@@ -60,11 +65,11 @@ public class CSVReader {
 						vals.add(deaths); // adds the deaths
 						vals.add(recovered); // adds the recovered
 
-						t.put(state, vals);
+						tree.put(state, vals);
 
 					} else { // the state already exists as a key
 
-						for (Map.Entry<String, ArrayList<Integer>> k : t
+						for (Map.Entry<String, ArrayList<Integer>> k : tree
 								.entrySet()) { // loop through the treemap
 
 							if (data[2].contentEquals(k.getKey())) { // find the
@@ -115,6 +120,13 @@ public class CSVReader {
 		}
 	}
 	
+	/**
+     * This method update info to treemap
+     * 
+     * @param newCases - number of new cases to report
+     * @param type     - type of case (i.e., deaths, confirmed, recovered)
+     * @param state    - state where there is a new case
+     */
 	public void addNew(String dataType, String state, int number) {;
 	    int type = 0;
 	    if(dataType.contains("Recovered")) {
@@ -122,7 +134,7 @@ public class CSVReader {
 	    }else if (dataType.contains("Deaths")) {
 	        type = 1;
 	    }
-	    for (Map.Entry<String, ArrayList<Integer>> k : t.entrySet()) {
+	    for (Map.Entry<String, ArrayList<Integer>> k : tree.entrySet()) {
             if (k.getKey().equals(state)) {
                 int temp = k.getValue().get(type)+number;
                 k.getValue().set(type, temp);
@@ -152,8 +164,12 @@ public class CSVReader {
 		return file;
 	}
 
-	void printContents() {
-		for (Map.Entry<String, ArrayList<Integer>> k : t.entrySet()) {
+	/**
+     * This method print all node in the treemap
+     * 
+     */
+	public void printContents() {
+		for (Map.Entry<String, ArrayList<Integer>> k : tree.entrySet()) {
 			System.out.println(k.getKey());
 			System.out.println("confirmed: " + k.getValue().get(0)
 					+ ", deaths: " + k.getValue().get(1) + ", recovered: "
@@ -167,7 +183,7 @@ public class CSVReader {
 	 */
 	public int getTotalCases() {
 		int total = 0;
-		for (Map.Entry<String, ArrayList<Integer>> k : t.entrySet()) {
+		for (Map.Entry<String, ArrayList<Integer>> k : tree.entrySet()) {
 			ArrayList<Integer> temp = k.getValue();
 			total += temp.get(0);
 		}
@@ -181,7 +197,7 @@ public class CSVReader {
 	 */
 	public int getTotalDeaths() {
 		int total = 0;
-		for (Map.Entry<String, ArrayList<Integer>> k : t.entrySet()) {
+		for (Map.Entry<String, ArrayList<Integer>> k : tree.entrySet()) {
 			ArrayList<Integer> temp = k.getValue();
 			total += temp.get(1);
 		}
@@ -195,7 +211,7 @@ public class CSVReader {
 	 */
 	public int getTotalRecovered() {
 		int total = 0;
-		for (Map.Entry<String, ArrayList<Integer>> k : t.entrySet()) {
+		for (Map.Entry<String, ArrayList<Integer>> k : tree.entrySet()) {
 			ArrayList<Integer> temp = k.getValue();
 			total += temp.get(2);
 		}
@@ -210,7 +226,7 @@ public class CSVReader {
 	 */
 	public int getTotalCases(String state) {
 		int total = 0;
-		for (Map.Entry<String, ArrayList<Integer>> k : t.entrySet()) {
+		for (Map.Entry<String, ArrayList<Integer>> k : tree.entrySet()) {
 			if (k.getKey().equals(state)) {
 				ArrayList<Integer> temp = k.getValue();
 				total += temp.get(0);
@@ -228,7 +244,7 @@ public class CSVReader {
 	 */
 	public int getTotalDeaths(String state) {
 		int total = 0;
-		for (Map.Entry<String, ArrayList<Integer>> k : t.entrySet()) {
+		for (Map.Entry<String, ArrayList<Integer>> k : tree.entrySet()) {
 			if (k.getKey().equals(state)) {
 				ArrayList<Integer> temp = k.getValue();
 				total += temp.get(1);
@@ -246,7 +262,7 @@ public class CSVReader {
 	 */
 	public int getTotalRecovered(String state) {
 		int total = 0;
-		for (Map.Entry<String, ArrayList<Integer>> k : t.entrySet()) {
+		for (Map.Entry<String, ArrayList<Integer>> k : tree.entrySet()) {
 			if (k.getKey().equals(state)) {
 				ArrayList<Integer> temp = k.getValue();
 				total += temp.get(2);
