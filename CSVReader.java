@@ -135,12 +135,56 @@ public class CSVReader {
 		}
 	}
 
+	/**
+	 * Method to get total confirmed cases 
+	 * @return total confirmed cases 
+	 */
+	private int getTotalCases() {
+		int total = 0;
+		for (Map.Entry<String, ArrayList<Integer>> k : t.entrySet()) {
+			ArrayList<Integer> temp = k.getValue();
+			total += temp.get(0);
+		}
+	
+		return total;
+	}
+	
+	/**
+	 * Method to get total deaths
+	 * @return total deaths
+	 */
+	private int getTotalDeaths() {
+		int total = 0;
+		for (Map.Entry<String, ArrayList<Integer>> k : t.entrySet()) {
+			ArrayList<Integer> temp = k.getValue();
+			total += temp.get(1);
+		}
+	
+		return total;
+	}
+	
+	/**
+	 * Method to get total recovered 
+	 * @return total recovered 
+	 */
+	private int getTotalRecovered() {
+		int total = 0;
+		for (Map.Entry<String, ArrayList<Integer>> k : t.entrySet()) {
+			ArrayList<Integer> temp = k.getValue();
+			total += temp.get(2);
+		}
+	
+		return total;
+	}
+	
 	public static void main(String[] args) {
 		CSVReader tester = new CSVReader(
 				"/Users/jadelee/Documents/cs400/a3/data.csv");
 		tester.reader();
 		tester.printContents();
-
+		System.out.println("getTotalCases(): " + tester.getTotalCases());
+		System.out.println("getTotalDeaths(): " + tester.getTotalDeaths());
+		System.out.println("getTotalRecovered(): " + tester.getTotalRecovered());
 	}
 }
 
