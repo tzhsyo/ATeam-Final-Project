@@ -1,0 +1,33 @@
+import static org.junit.jupiter.api.Assertions.fail;
+import java.io.IOException;
+import org.junit.Test;
+
+public class csvTester {
+  
+  private static final String pathName = "";
+  CSVReader myReader = new CSVReader(pathName);
+  
+  
+  @Test
+  public void test001_addNew() {
+    String newCases = "100";
+    String type = "deaths";
+    String state = "New York";
+    
+    try {
+      myReader.addNew(newCases,type,state);
+    } catch (IOException e) {
+      e.printStackTrace();
+      fail("failed to make a new file");
+      
+    }
+  }
+  
+  @Test 
+  public void test002_reader() throws IOException {
+   myReader.reader();
+    if(myReader.t.containsKey("Wisconsin") != true) {
+      fail("tree map does not have pathname you are searching for");
+    }
+  }
+}
